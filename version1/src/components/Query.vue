@@ -1,128 +1,141 @@
 <template>
-  <el-container class="layout-container-demo" style="height: 500px">
-    <el-aside width="200px">
-      <el-scrollbar>
-        <el-menu :default-openeds="['1', '3']">
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon><message /></el-icon>Navigator One
-            </template>
-            <el-menu-item-group>
-              <template #title>Group 1</template>
-              <el-menu-item index="1-1">Option 1</el-menu-item>
-              <el-menu-item index="1-2">Option 2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-              <el-menu-item index="1-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="1-4">
-              <template #title>Option4</template>
-              <el-menu-item index="1-4-1">Option 4-1</el-menu-item>
-            </el-sub-menu>
-          </el-sub-menu>
-          <el-sub-menu index="2">
-            <template #title>
-              <el-icon><icon-menu /></el-icon>Navigator Two
-            </template>
-            <el-menu-item-group>
-              <template #title>Group 1</template>
-              <el-menu-item index="2-1">Option 1</el-menu-item>
-              <el-menu-item index="2-2">Option 2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-              <el-menu-item index="2-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="2-4">
-              <template #title>Option 4</template>
-              <el-menu-item index="2-4-1">Option 4-1</el-menu-item>
-            </el-sub-menu>
-          </el-sub-menu>
-          <el-sub-menu index="3">
-            <template #title>
-              <el-icon><setting /></el-icon>Navigator Three
-            </template>
-            <el-menu-item-group>
-              <template #title>Group 1</template>
-              <el-menu-item index="3-1">Option 1</el-menu-item>
-              <el-menu-item index="3-2">Option 2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-              <el-menu-item index="3-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="3-4">
-              <template #title>Option 4</template>
-              <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
-            </el-sub-menu>
-          </el-sub-menu>
-        </el-menu>
-      </el-scrollbar>
-    </el-aside>
+  <div class="background-container">
+    <div id="species-form">
+      <label for="species-input">物种：</label>
+      <select v-model="selectedSpecies" @change="updateIndividualOptions">
+        <option v-for="species in speciesOptions" :value="species.value" :key="species.value">
+          {{ species.label }}
+        </option>
+      </select>
 
-    <el-container>
-      <el-header style="text-align: right; font-size: 12px">
-        <div class="toolbar">
-          <el-dropdown>
-            <el-icon style="margin-right: 8px; margin-top: 1px"
-            ><setting
-            /></el-icon>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>View</el-dropdown-item>
-                <el-dropdown-item>Add</el-dropdown-item>
-                <el-dropdown-item>Delete</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-          <span>Tom</span>
-        </div>
-      </el-header>
+      <label for="individual-input">个体：</label>
+      <select v-model="selectedIndividual" :disabled="!individualOptions.length">
+        <option v-for="individual in individualOptions" :value="individual.value" :key="individual.value">
+          {{ individual.label }}
+        </option>
+      </select>
+    </div>
 
-      <el-main>
-        <el-scrollbar>
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="Date" width="140" />
-            <el-table-column prop="name" label="Name" width="120" />
-            <el-table-column prop="address" label="Address" />
-          </el-table>
-        </el-scrollbar>
-      </el-main>
-    </el-container>
-  </el-container>
+    <table>
+      <thead>
+      <tr>
+        <th>日期</th>
+        <th>物种</th>
+        <th>个体</th>
+        <th>地区</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>2024年3月10日</td>
+        <td>{{ selectedSpecies }}</td>
+        <td>{{ selectedIndividual }}</td>
+        <td>剑湖</td>
+      </tr>
+      <!-- 这里可以通过 v-for 动态生成更多的行 -->
+      </tbody>
+    </table>
+  </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
+<!-- 其他部分保持不变 -->
 
-const item = {
-  date: '2016-05-02',
-  name: 'Tom',
-  address: 'No. 189, Grove St, Los Angeles',
-}
-const tableData = ref(Array.from({ length: 20 }).fill(item))
+
+<script>
+export default {
+  data() {
+    return {
+      selectedSpecies: '',
+      selectedIndividual: '',
+      speciesOptions: [
+        { value: '赤麻鸭雄', label: '赤麻鸭雄' },
+        { value: '赤麻鸭雌', label: '赤麻鸭雌' },
+        { value: '赤麻鸭幼', label: '赤麻鸭幼' },
+      ],
+      individualOptions: [],
+    };
+  },
+  methods: {
+    updateIndividualOptions() {
+      let individuals = [];
+      switch (this.selectedSpecies) {
+        case '赤麻鸭雄':
+          individuals = [
+            { value: '赤麻鸭1号', label: '赤麻鸭1号' },
+            { value: '赤麻鸭3号', label: '赤麻鸭3号' },
+            { value: '赤麻鸭5号', label: '赤麻鸭5号' },
+          ];
+          break;
+        case '赤麻鸭雌':
+          individuals = [
+            { value: '赤麻鸭2号', label: '赤麻鸭2号' },
+            { value: '赤麻鸭4号', label: '赤麻鸭4号' },
+          ];
+          break;
+        case '赤麻鸭幼':
+          individuals = [
+            { value: '赤麻鸭5号', label: '赤麻鸭5号' },
+          ];
+          break;
+        default:
+          individuals = [];
+      }
+      this.individualOptions = individuals;
+      if (this.individualOptions.length) {
+        this.selectedIndividual = this.individualOptions[0].value; // 默认选中第一个个体
+      } else {
+        this.selectedIndividual = ''; // 如果没有可选个体，则清空选中值
+      }
+    }
+  },
+  mounted() {
+    this.updateIndividualOptions(); // 在组件挂载后初始化 individualOptions
+  }
+};
 </script>
 
 <style scoped>
-.layout-container-demo .el-header {
-  position: relative;
-  background-color: var(--el-color-primary-light-7);
-  color: var(--el-text-color-primary);
-}
-.layout-container-demo .el-aside {
-  color: var(--el-text-color-primary);
-  background: var(--el-color-primary-light-8);
-}
-.layout-container-demo .el-menu {
-  border-right: none;
-}
-.layout-container-demo .el-main {
-  padding: 0;
-}
-.layout-container-demo .toolbar {
-  display: inline-flex;
+#species-form {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  right: 20px;
+  margin-bottom: 20px;
 }
+
+label {
+  margin-right: 10px;
+}
+
+select {
+  margin-left: 10px;
+}
+
+.background-container {
+  display: flex;
+  flex-direction: column;
+  background-image: url('@/assets/imageHome.png');
+  background-size: cover;
+  background-attachment: fixed;
+  width: 100vw;
+  height: 100vh;
+  justify-content: normal;
+  align-items: center;
+}
+
+table {
+  width: 50%; /* 设置为原来的一半 */
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2; /* 表头背景色 */
+  color: black; /* 文字颜色 */
+}
+
 </style>

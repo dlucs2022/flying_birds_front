@@ -1,9 +1,16 @@
-<script setup>
-import Test from "@/components/Test.vue";
-import UploadFile from "@/components/UploadFile.vue";
-</script>
+<!-- App.vue -->
 <template>
-
-  <UploadFile/>
-
+  <div id="app">
+    <Query />
+  </div>
 </template>
+
+
+<style>
+/* 可以添加样式 */
+</style>
+<script setup>
+import TheWelcome from "@/components/TheWelcome.vue";
+import UploadFile from "@/components/UploadFile.vue";
+import Query from "@/components/Query.vue";
+</script>
