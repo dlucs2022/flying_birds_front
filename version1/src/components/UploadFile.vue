@@ -1,9 +1,46 @@
-<script setup>
-import { ref } from 'vue';
-import { ElSelect, ElOption, ElUpload, ElButton } from 'element-plus';
+<template>
+  <div class="background-container">
+    <div class="overlay">
+      <h1 style="text-align: center;">上传文件</h1>
 
-const fileToUpload = ref(null);
-const value = ref(null);
+      <div class="form-container">
+        <!-- 下拉选择框 -->
+        <el-select v-model="selectedSpecies" placeholder="请选择物种" class="el-select" style="width: 240px; margin-bottom: 20px;">
+          <el-option v-for="species in speciesOptions" :key="species.value" :value="species.value" :label="species.label"></el-option>
+        </el-select>
+
+        <!-- 添加物种 -->
+        <div style="margin-bottom: 10px;">
+          <span>添加物种:</span>
+        </div>
+        <div style="display: flex; margin-bottom: 20px;">
+          <el-input v-model="newSpecies" style="flex: 1;" placeholder="请输入物种名称"></el-input>
+          <el-button @click="addSpecies">确认添加</el-button>
+        </div>
+
+        <!-- 文件上传 -->
+        <el-upload action="/your-upload-api-endpoint" :before-upload="handleFileUpload" class="input-file">
+          <el-button slot="trigger">选择CSV文件</el-button>
+          <span slot="tip" style="margin-left: 8px;">仅可选择100MB以内CSV文件</span>
+        </el-upload>
+
+        <!-- 提交按钮 -->
+        <el-button @click="submitFile" style="margin-top: 10px;">提交</el-button>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { ElSelect, ElOption, ElUpload, ElButton, ElInput } from 'element-plus';
+
+const fileToUpload = ref([]); // 使用 ref 数组保存文件列表
+const selectedSpecies = ref(''); // 保存选中的物种，初始值为空字符串
+const speciesOptions = ref([]); // 保存从后端获取的物种选项
+const newSpecies = ref(''); // 新添加的物种
 
 const handleFileUpload = (file) => {
   // 在这里处理文件上传前的逻辑，返回 false 可以取消上传
@@ -15,36 +52,48 @@ const submitFile = () => {
   // 在这里添加提交文件的逻辑
   console.log('Submitting file:', fileToUpload.value);
 };
+
+// 处理文件移除的方法
+const handleFileRemove = (file) => {
+  console.log('File removed:', file);
+};
+
+// 处理文件上传成功的方法
+const handleFileSuccess = (response, file) => {
+  console.log('File uploaded successfully:', file);
+};
+
+// 从后端获取物种数据
+const fetchSpeciesOptions = async () => {
+  try {
+    const response = await axios.get('/api/species'); // 假设从 '/api/species' 获取物种数据
+    speciesOptions.value = response.data.map(species => ({
+      value: species.id,
+      label: species.name
+    }));
+  } catch (error) {
+    console.error('Error fetching species:', error);
+  }
+};
+
+// 组件挂载后获取物种数据
+onMounted(() => {
+  fetchSpeciesOptions();
+});
+
+// 添加物种
+const addSpecies = () => {
+  if (newSpecies.value) {
+    speciesOptions.value.unshift({
+      value: newSpecies.value,
+      label: newSpecies.value
+    });
+    selectedSpecies.value = newSpecies.value; // 自动选中新添加的物种
+    newSpecies.value = ''; // 清空输入框
+  }
+};
 </script>
 
-<template>
-  <div class="background-container">
-    <div class="overlay">
-      <h1>上传文件</h1>
-
-      <div class="form-container">
-        <!-- 使用 ElSelect 替换原生 select -->
-        <el-select v-model="value" placeholder="请选择" class="el-select">
-          <!-- 使用 ElOption 替换原生 option -->
-          <el-option label="选项1" value="option1"></el-option>
-          <el-option label="选项2" value="option2"></el-option>
-          <el-option label="鸟" value="bird"></el-option>
-          <el-option label="羊" value="sheep"></el-option>
-        </el-select>
-
-        <!-- 使用 Element Plus 中的 ElUpload 组件 -->
-        <el-upload
-            action="/your-upload-api-endpoint"
-            :before-upload="handleFileUpload"
-            class="input-file"
-        ></el-upload>
-
-        <!-- 使用 Element Plus 中的 ElButton 组件 -->
-        <el-button @click="submitFile">提交</el-button>
-      </div>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .background-container {
@@ -70,6 +119,12 @@ const submitFile = () => {
   display: flex; /* 使用 Flex 布局 */
   flex-direction: column; /* 主轴方向为纵向排列 */
   align-items: normal; /* 项目在交叉轴上居中对齐 */
+}
+
+.species-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .input-file {
