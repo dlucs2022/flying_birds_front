@@ -13,3 +13,8 @@ import Layout from './components/layout.vue'
 <style scoped>
 
 </style>
+<script setup>
+import TheWelcome from "@/components/TheWelcome.vue";
+import UploadFile from "@/components/UploadFile.vue";
+import Query from "@/components/Query.vue";
+</script>
