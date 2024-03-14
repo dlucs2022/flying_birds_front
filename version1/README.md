@@ -27,3 +27,12 @@ npm run dev
 ```sh
 npm run build
 ```
+
+
+### 下载elementPlus、route、axios
+```sh
+npm i --save axios
+npm install element-plus --save
+npm install vue-router@4.0.0-beta.13
+```
+
