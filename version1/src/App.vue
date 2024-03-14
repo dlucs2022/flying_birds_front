@@ -1,7 +1,7 @@
 <!-- App.vue -->
 <template>
   <div id="app">
-    <Query />
+    <query/>
   </div>
 </template>
 

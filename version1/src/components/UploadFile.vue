@@ -1,6 +1,6 @@
 <script setup>
-import {ref} from 'vue';
-import {ElSelect, ElOption, ElUpload, ElButton} from 'element-plus';
+import { ref } from 'vue';
+import { ElSelect, ElOption, ElUpload, ElButton } from 'element-plus';
 
 const fileToUpload = ref(null);
 const value = ref(null);
@@ -16,6 +16,35 @@ const submitFile = () => {
   console.log('Submitting file:', fileToUpload.value);
 };
 </script>
+
+<template>
+  <div class="background-container">
+    <div class="overlay">
+      <h1>上传文件</h1>
+
+      <div class="form-container">
+        <!-- 使用 ElSelect 替换原生 select -->
+        <el-select v-model="value" placeholder="请选择" class="el-select">
+          <!-- 使用 ElOption 替换原生 option -->
+          <el-option label="选项1" value="option1"></el-option>
+          <el-option label="选项2" value="option2"></el-option>
+          <el-option label="鸟" value="bird"></el-option>
+          <el-option label="羊" value="sheep"></el-option>
+        </el-select>
+
+        <!-- 使用 Element Plus 中的 ElUpload 组件 -->
+        <el-upload
+            action="/your-upload-api-endpoint"
+            :before-upload="handleFileUpload"
+            class="input-file"
+        ></el-upload>
+
+        <!-- 使用 Element Plus 中的 ElButton 组件 -->
+        <el-button @click="submitFile">提交</el-button>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .background-container {
@@ -52,30 +81,3 @@ const submitFile = () => {
   margin-bottom: 20px; /* 底部外边距，用于控制元素与其他元素之间的间距 */
 }
 </style>
-
-
-<template>
-  <div class="background-container">
-    <div class="overlay">
-      <h1>上传文件</h1>
-
-      <div class="form-container">
-        <!-- 添加下拉选择框 -->
-        <select v-model="value"  class="el-select">
-          <option label="选项1" value="option1"></option>
-          <option label="选项2" value="option2"></option>
-          <option label="鸟" value="bird"></option>
-          <option label="羊" value="sheep"></option>
-        </select>
-
-        <!-- 添加文件上传和提交按钮 -->
-        <el-upload
-            action="/your-upload-api-endpoint"
-            :before-upload="handleFileUpload"
-            class="input-file"
-        ></el-upload>
-        <el-button @click="submitFile">提交</el-button>
-      </div>
-    </div>
-  </div>
-</template>
