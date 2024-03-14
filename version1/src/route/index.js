@@ -4,7 +4,7 @@ import AppHome from "@/components/AppHome.vue";
 import AppUpload from "@/components/AppUpload.vue";
 
 const routes = [
-    {path : "/",redirect : "/Layout",component : Layout},
+    {path : "/",name:"layout",component : Layout ,redirect : "/home"},
     {path : "/home",name:"home",component : AppHome},
     {path : "/upload",name:"upload",component : AppUpload}
 ]

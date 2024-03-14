@@ -16,7 +16,6 @@ import dao from '@/api/dao'
     // 确定上传
     const uploadBtn = async () => {
        let param = new FormData()
-       // 如果是多个文件数组就循环添加一下就ok了
        param.append("file", file.value.raw)
        param.append("speciesName", speciesName.value)
        // 发个后端

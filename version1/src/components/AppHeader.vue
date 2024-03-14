@@ -30,7 +30,7 @@
 </template>
 <script setup>
     import { ref } from 'vue'
-    const activeIndex = ref('1')
+    const activeIndex = ref('/home')
 
     const handleSelect = (key, keyPath) => {
         console.log(key, keyPath)
