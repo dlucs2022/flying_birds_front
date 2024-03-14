@@ -16,8 +16,8 @@ import dao from '@/api/dao'
     // 确定上传
     const uploadBtn = async () => {
        let param = new FormData()
-       param.append("file", file.value.raw)
-       param.append("speciesName", speciesName.value)
+       param.append("files", file.value.raw)
+       param.append("species", speciesName.value)
        // 发个后端
        const res = await dao.uploadFile(param).then((res) => {
          return res
@@ -56,7 +56,7 @@ import dao from '@/api/dao'
             <template #tip>
             <div class="el-upload__tip">
                 csv files with a size less than 1GB.
-                <el-button type="primary" @click="uploadBtn" style="float:right;margin-right:20px">确定上传</el-button>
+                <el-button type="primary" @click="uploadBtn" style="float:right;margin-right:20px">Upload</el-button>
             </div>
             </template>
         </el-upload>

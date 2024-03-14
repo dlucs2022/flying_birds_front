@@ -22,6 +22,7 @@ import AppMain from './AppMain.vue'
     width: 100vw;
     display: flex;
     flex-direction: column;
+    background-color: rgb(255, 255, 255);
   }
   
 </style>

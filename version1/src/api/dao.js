@@ -3,7 +3,7 @@ export default {
 
     async uploadFile(data) {
         return request({
-            url: '/upload_csv',
+            url: '/flyingbirds/upload',
             method: 'post',
             data,
             headers:{
