@@ -11,5 +11,17 @@ export default {
             }
         })
     },
+    async getQueryData(species,currentPage,pageSize){
+        return request({
+            url: '/flyingbirds/parser/data',
+            method: 'post',
+            data: {
+                "species":species,
+                "currentPage":currentPage,
+                "pageSize":pageSize,
+            }
+        })
+    }
 
 }
+

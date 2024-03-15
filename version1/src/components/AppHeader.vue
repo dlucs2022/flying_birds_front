@@ -21,9 +21,10 @@
             </el-sub-menu>
             </el-sub-menu> -->
             <el-menu-item index="/upload" >Upload</el-menu-item>
+            <el-menu-item index="/query">Query</el-menu-item>
+            <el-menu-item index="3">Visual</el-menu-item>
             <el-menu-item index="4">Todo</el-menu-item>
-            <el-menu-item index="4">Todo</el-menu-item>
-            <el-menu-item index="4">Todo</el-menu-item>
+            <el-menu-item index="5">Todo</el-menu-item>
         </el-menu>
         <div class="h-6" />
     </div>
