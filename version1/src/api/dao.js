@@ -21,6 +21,13 @@ export default {
                 "pageSize":pageSize,
             }
         })
+    },
+
+    async getSpecies(){
+        return request({
+            url: '/flyingbirds/parser/species',
+            method: 'post',
+        })
     }
 
 }

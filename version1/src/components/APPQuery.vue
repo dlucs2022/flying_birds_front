@@ -7,22 +7,38 @@ const currentPage = ref(1)
 const pageSize = ref(30)
 const totalData = ref(1000)
 const species = ref('')
+const select_species = ref('')
+const sepcies_list = ref([])
 
 let tableData = ref([])
 async function fetchData() {
-      await dao.getQueryData(species.value,currentPage.value,pageSize.value).then((res) => {
-          if (res.code === 0) {
-            tableData.value = res.data.data 
-            totalData.value = res.data.total
-            
-          }
-      }).catch((err) => {
-        console.log(err)
-      })
-      
+  await dao.getQueryData(species.value,currentPage.value,pageSize.value).then((res) => {
+      if (res.code === 0) {
+        tableData.value = res.data.data 
+        totalData.value = res.data.total
+        
+      }
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+async function getSpeciesList() {
+  await dao.getSpeciesList().then((res) => {
+    if (res.code === 0) {
+      sepcies_list.value = res.data.data
     }
-onMounted(() => {
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+function selectSpecies(val: string) {
+  species.value = val
   fetchData()
+
+}
+onMounted(() => {
+  // fetchData()
+  getSpeciesList()
 
 })
 const handleSizeChange = (val: number) => {
@@ -35,7 +51,21 @@ const handleCurrentChange = (val: number) => {
 </script>
 
 <template>
-    <el-input v-model="species" style="width: 240px ;margin-bottom:20px" placeholder="Please input species." size="large"/>
+  <el-select
+      v-model="select_species"
+      placeholder="Select species"
+      size="large"
+      style="width: 240px;margin-bottom:20px"
+      @change="species = select_species"
+    >
+      <el-option
+        v-for="item in sepcies_list"
+        :key="item.value"
+        :label="item.value"
+        :value="item.value"
+      />
+    </el-select>
+    
     <el-table :data="tableData" style="width: 100%" height="250">
       <el-table-column fixed prop="species_id" label="species_id" width="150" />
       <el-table-column prop="device_name" label="device_name" width="120" />
