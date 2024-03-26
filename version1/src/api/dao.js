@@ -23,7 +23,7 @@ export default {
         })
     },
 
-    async getSpecies(){
+    async getSpeciesList(){
         return request({
             url: '/flyingbirds/parser/species',
             method: 'post',
